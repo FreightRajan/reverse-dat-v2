@@ -39,7 +39,7 @@ const SAMPLE_LOADS = [
   { origin: "Midland, TX", destination: "Odessa, TX", commodity: "Oilfield equipment", equipment: "Step Deck", weight: "38,000 lbs", notes: "Oversized, pilot car needed", rate: "1200", miles: "45" },
   { origin: "Corsicana, TX", destination: "Dallas, TX", commodity: "Mattresses", equipment: "Dry Van", weight: "12,000 lbs", notes: "Multi-stop", rate: "650", miles: "60" },
 ];
-const EMPTY_FORM = { origin: "", destination: "", commodity: "", equipment: "Flatbed", weight: "", notes: "", rate: "", miles: "" };
+const EMPTY_FORM = { origin: "", destination: "", commodity: "", equipment: "Flatbed", weight: "", notes: "", rate: "", miles: "", spotRate: "", spotLow: "", spotHigh: "", contractRate: "", contractLow: "", contractHigh: "" };
 const EQUIP_TYPES = ["Flatbed", "Step Deck", "Dry Van", "Reefer", "Hotshot", "Power Only", "RGN/Lowboy", "Conestoga"];
 const TABS = ["analyze", "log", "intel", "settings"];
 
@@ -53,6 +53,47 @@ function ppm(rate, miles) {
 function today() { return new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); }
 function extractShipper(text) { const m = text.match(/\*\*([^*]{3,60})\*\*/); return m ? m[1] : "See analysis"; }
 function extractConf(text) { const m = text.match(/\b(HIGH|MEDIUM|LOW)\b/i); return m ? m[1].toUpperCase() : "—"; }
+
+/* ── Rate Intelligence ── */
+function parseRate(v) { const n = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isNaN(n) ? null : n; }
+function rateIntel(form) {
+  const posted = parseRate(form.rate);
+  const spot = parseRate(form.spotRate);
+  const spotLow = parseRate(form.spotLow);
+  const spotHigh = parseRate(form.spotHigh);
+  const contract = parseRate(form.contractRate);
+  const miles = parseRate(form.miles);
+  if (!posted && !spot) return null;
+
+  const intel = {};
+  if (posted && spot) {
+    intel.postedVsSpot = posted - spot;
+    intel.postedVsSpotPct = ((posted - spot) / spot * 100).toFixed(1);
+  }
+  if (spot && contract) {
+    intel.spotVsContract = spot - contract;
+    intel.spotVsContractPct = ((spot - contract) / contract * 100).toFixed(1);
+  }
+  if (posted && miles) intel.postedPPM = (posted / miles).toFixed(2);
+  if (spot && miles) intel.spotPPM = (spot / miles).toFixed(2);
+  if (contract && miles) intel.contractPPM = (contract / miles).toFixed(2);
+
+  // Coverage difficulty logic
+  if (posted && spot) {
+    if (posted < spot * 0.85) { intel.difficulty = "VERY HARD"; intel.diffColor = "#f85149"; intel.diffNote = "Posted rate is " + Math.abs(intel.postedVsSpotPct) + "% below spot — carriers won't touch this without a bump"; }
+    else if (posted < spot * 0.95) { intel.difficulty = "HARD"; intel.diffColor = "#d29922"; intel.diffNote = "Posted rate is below spot average — expect pushback, may need to increase"; }
+    else if (posted >= spot * 0.95 && posted <= spot * 1.05) { intel.difficulty = "FAIR"; intel.diffColor = "#d29922"; intel.diffNote = "Posted rate is near spot — competitive but tight margin"; }
+    else if (posted > spot * 1.05) { intel.difficulty = "EASY"; intel.diffColor = "#3fb950"; intel.diffNote = "Posted rate above spot — good margin opportunity, should cover quick"; }
+  }
+  // Spot vs contract trend
+  if (spot && contract) {
+    if (spot > contract * 1.1) { intel.marketTrend = "HOT"; intel.trendColor = "#f85149"; intel.trendNote = "Spot " + intel.spotVsContractPct + "% above contract — tight capacity, rates rising"; }
+    else if (spot > contract) { intel.marketTrend = "WARM"; intel.trendColor = "#d29922"; intel.trendNote = "Spot above contract — moderate demand"; }
+    else { intel.marketTrend = "COOL"; intel.trendColor = "#3fb950"; intel.trendNote = "Spot at or below contract — capacity is loose, good for brokers"; }
+  }
+  intel.spotLow = spotLow; intel.spotHigh = spotHigh;
+  return intel;
+}
 
 /* ── Storage (localStorage) ── */
 function loadFromLS(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } }
@@ -100,6 +141,9 @@ async function pushToSheets(webAppUrl, entry) {
       commodity: entry.commodity, equipment: entry.equipment, weight: entry.weight,
       rate: entry.rate, miles: entry.miles, ppm: entry.ppm || "",
       likelyShipper: entry.likelyShipper || "", confidence: entry.confidence || "", notes: entry.notes,
+      spotRate: entry.spotRate || "", spotLow: entry.spotLow || "", spotHigh: entry.spotHigh || "",
+      contractRate: entry.contractRate || "", difficulty: entry.difficulty || "", marketTrend: entry.marketTrend || "",
+      postedVsSpot: entry.postedVsSpot || "",
       timestamp: entry.timestamp || new Date().toISOString(),
     };
     // Include screenshot if present (base64 data URI)
@@ -118,8 +162,8 @@ async function pushToSheets(webAppUrl, entry) {
 }
 
 function buildTSV(log) {
-  const headers = ["Date","Origin","Destination","Commodity","Equipment","Weight","Rate","Miles","$/mi","Likely Shipper","Confidence","Notes","Screenshot"];
-  const rows = log.map(r => [r.date,r.origin,r.destination,r.commodity,r.equipment,r.weight,r.rate,r.miles,r.ppm||"",r.likelyShipper||"",r.confidence||"",r.notes,r.hasScreenshot?"Yes — see Drive folder":""]);
+  const headers = ["Date","Origin","Destination","Commodity","Equipment","Weight","Rate","Miles","$/mi","Spot Rate","Spot Low","Spot High","Contract Rate","Coverage","Lane Temp","Posted vs Spot %","Likely Shipper","Confidence","Notes","Screenshot"];
+  const rows = log.map(r => [r.date,r.origin,r.destination,r.commodity,r.equipment,r.weight,r.rate,r.miles,r.ppm||"",r.spotRate||"",r.spotLow||"",r.spotHigh||"",r.contractRate||"",r.difficulty||"",r.marketTrend||"",r.postedVsSpot||"",r.likelyShipper||"",r.confidence||"",r.notes,r.hasScreenshot?"Yes":""]);
   return [headers,...rows].map(row => row.map(c => String(c||"").replace(/\t/g," ")).join("\t")).join("\n");
 }
 
@@ -198,12 +242,18 @@ Extract ALL load details visible in the screenshot. Return ONLY a JSON object wi
   "commodity": "what is being shipped",
   "equipment": "must be one of: Flatbed, Step Deck, Dry Van, Reefer, Hotshot, Power Only, RGN/Lowboy, Conestoga",
   "weight": "weight with units",
-  "rate": "dollar amount only, no $ sign",
+  "rate": "posted rate dollar amount only, no $ sign",
   "miles": "number only",
-  "notes": "any other details: dimensions, hazmat, tarping, stops, dates, reference numbers, special requirements"
+  "spotRate": "spot rate dollar amount (often labeled SPOT RATE or 7d average), no $ sign",
+  "spotLow": "spot range low end, no $ sign",
+  "spotHigh": "spot range high end, no $ sign",
+  "contractRate": "contract rate dollar amount (often labeled CONTRACT RATE or 90d average), no $ sign",
+  "contractLow": "contract range low end, no $ sign",
+  "contractHigh": "contract range high end, no $ sign",
+  "notes": "any other details: dimensions, hazmat, tarping, stops, dates, reference numbers, company name, broker name, credit score, days to pay"
 }
 
-Parse aggressively — pull every detail you can see. For equipment, map common abbreviations: F/SD = Flatbed/Step Deck, V = Van, R = Reefer. If you see multiple loads, parse the most prominent/selected one. Return ONLY the JSON, no other text.` }
+Parse aggressively — pull every detail you can see including MARKET RATES sections. For equipment, map common abbreviations: F/SD = Flatbed/Step Deck, V = Van, R = Reefer, FT = Flatbed. If you see multiple loads, parse the most prominent/selected one. Return ONLY the JSON, no other text.` }
               ]
             }]
           }),
@@ -225,6 +275,12 @@ Parse aggressively — pull every detail you can see. For equipment, map common 
           weight: parsed.weight || f.weight,
           rate: parsed.rate || f.rate,
           miles: parsed.miles || f.miles,
+          spotRate: parsed.spotRate || f.spotRate,
+          spotLow: parsed.spotLow || f.spotLow,
+          spotHigh: parsed.spotHigh || f.spotHigh,
+          contractRate: parsed.contractRate || f.contractRate,
+          contractLow: parsed.contractLow || f.contractLow,
+          contractHigh: parsed.contractHigh || f.contractHigh,
           notes: parsed.notes || f.notes,
         }));
       } catch (e) {
@@ -303,6 +359,63 @@ Parse aggressively — pull every detail you can see. For equipment, map common 
           )}
         </div>
       </div>
+
+      {/* Market Rate Data (from DAT iQ) */}
+      <div style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:8,padding:"14px 16px"}}>
+        <div style={{fontSize:11,color:"var(--muted)",fontFamily:"var(--mono)",textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>📊 Market Rates (from DAT iQ)</div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+          <Field label="Spot Rate ($)" value={form.spotRate} onChange={set("spotRate")} placeholder="e.g. 2440" />
+          <Field label="Spot Low ($)" value={form.spotLow} onChange={set("spotLow")} placeholder="e.g. 2059" />
+          <Field label="Spot High ($)" value={form.spotHigh} onChange={set("spotHigh")} placeholder="e.g. 2570" />
+          <Field label="Contract Rate ($)" value={form.contractRate} onChange={set("contractRate")} placeholder="e.g. 2034" />
+          <Field label="Contract Low ($)" value={form.contractLow} onChange={set("contractLow")} placeholder="e.g. 1623" />
+          <Field label="Contract High ($)" value={form.contractHigh} onChange={set("contractHigh")} placeholder="e.g. 2420" />
+        </div>
+
+        {/* Rate Intelligence Panel */}
+        {(() => {
+          const ri = rateIntel(form);
+          if (!ri) return null;
+          return (
+            <div style={{marginTop:12,display:"flex",flexDirection:"column",gap:8}}>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit, minmax(140px, 1fr))",gap:8}}>
+                {ri.difficulty && (
+                  <div style={{background:"var(--bg)",borderRadius:6,padding:"10px 12px",border:`1px solid ${ri.diffColor}33`}}>
+                    <div style={{fontSize:10,color:"var(--muted)",fontFamily:"var(--mono)",textTransform:"uppercase"}}>Coverage</div>
+                    <div style={{fontSize:16,fontWeight:800,color:ri.diffColor,fontFamily:"var(--heading)"}}>{ri.difficulty}</div>
+                    <div style={{fontSize:10,color:"var(--text2)",marginTop:2}}>{ri.diffNote}</div>
+                  </div>
+                )}
+                {ri.marketTrend && (
+                  <div style={{background:"var(--bg)",borderRadius:6,padding:"10px 12px",border:`1px solid ${ri.trendColor}33`}}>
+                    <div style={{fontSize:10,color:"var(--muted)",fontFamily:"var(--mono)",textTransform:"uppercase"}}>Lane Temp</div>
+                    <div style={{fontSize:16,fontWeight:800,color:ri.trendColor,fontFamily:"var(--heading)"}}>{ri.marketTrend}</div>
+                    <div style={{fontSize:10,color:"var(--text2)",marginTop:2}}>{ri.trendNote}</div>
+                  </div>
+                )}
+                {ri.postedVsSpot !== undefined && (
+                  <div style={{background:"var(--bg)",borderRadius:6,padding:"10px 12px"}}>
+                    <div style={{fontSize:10,color:"var(--muted)",fontFamily:"var(--mono)",textTransform:"uppercase"}}>Posted vs Spot</div>
+                    <div style={{fontSize:16,fontWeight:800,color:ri.postedVsSpot>=0?"#3fb950":"#f85149",fontFamily:"var(--mono)"}}>{ri.postedVsSpot>=0?"+":""}${ri.postedVsSpot.toFixed(0)} ({ri.postedVsSpotPct}%)</div>
+                  </div>
+                )}
+                {ri.spotVsContract !== undefined && (
+                  <div style={{background:"var(--bg)",borderRadius:6,padding:"10px 12px"}}>
+                    <div style={{fontSize:10,color:"var(--muted)",fontFamily:"var(--mono)",textTransform:"uppercase"}}>Spot vs Contract</div>
+                    <div style={{fontSize:16,fontWeight:800,color:ri.spotVsContract>0?"#f85149":"#3fb950",fontFamily:"var(--mono)"}}>{ri.spotVsContract>=0?"+":""}${ri.spotVsContract.toFixed(0)} ({ri.spotVsContractPct}%)</div>
+                  </div>
+                )}
+              </div>
+              {ri.spotLow && ri.spotHigh && (
+                <div style={{fontSize:11,color:"var(--text2)",fontFamily:"var(--mono)",padding:"4px 0"}}>
+                  Spot range: ${parseRate(ri.spotLow)?.toLocaleString()} – ${parseRate(ri.spotHigh)?.toLocaleString()} {ri.spotPPM && `(${ri.spotPPM}/mi avg)`}
+                </div>
+              )}
+            </div>
+          );
+        })()}
+      </div>
+
       <Field label="Additional Notes" value={form.notes} onChange={set("notes")} placeholder="Tarping, oversized, hazmat, multi-stop, recurring, etc." full />
       <button onClick={()=>onAnalyze(form, preview)} disabled={loading||(!form.origin&&!form.commodity)} style={{background:loading?"var(--surface2)":"var(--accent)",color:loading?"var(--muted)":"#fff",border:"none",borderRadius:6,padding:"14px 24px",fontSize:15,fontWeight:700,cursor:loading?"wait":"pointer",fontFamily:"var(--heading)",letterSpacing:0.5,transition:"all 0.2s",marginTop:4}}>
         {loading ? "⏳ Analyzing load..." : "🔍 Reverse Engineer Shipper"}
@@ -581,7 +694,9 @@ const APPS_SCRIPT_CODE = `function doPost(e) {
   sheet.appendRow([
     data.date, data.origin, data.destination, data.commodity,
     data.equipment, data.weight, data.rate, data.miles,
-    data.ppm, data.likelyShipper, data.confidence, data.notes,
+    data.ppm, data.spotRate || "", data.spotLow || "", data.spotHigh || "",
+    data.contractRate || "", data.difficulty || "", data.marketTrend || "",
+    data.postedVsSpot || "", data.likelyShipper, data.confidence, data.notes,
     imageUrl
   ]);
 
@@ -633,7 +748,7 @@ function SettingsTab({ apiKey, setApiKey, webAppUrl, setWebAppUrl, onSaveKey, on
           <div style={{fontSize:13,fontWeight:700,color:"var(--accent)",fontFamily:"var(--heading)",marginBottom:12,textTransform:"uppercase",letterSpacing:0.5}}>Setup Instructions</div>
           <ol style={{margin:0,paddingLeft:20,fontSize:13,color:"var(--text2)",lineHeight:2.2}}>
             <li>Open <a href="https://sheets.new" target="_blank" rel="noopener noreferrer">sheets.new</a></li>
-            <li>Add headers in Row 1: <code style={{background:"var(--bg)",padding:"2px 6px",borderRadius:3,fontSize:11}}>Date | Origin | Destination | Commodity | Equipment | Weight | Rate | Miles | $/mi | Likely Shipper | Confidence | Notes | Screenshot</code></li>
+            <li>Add headers in Row 1: <code style={{background:"var(--bg)",padding:"2px 6px",borderRadius:3,fontSize:11}}>Date | Origin | Destination | Commodity | Equipment | Weight | Rate | Miles | $/mi | Spot Rate | Spot Low | Spot High | Contract Rate | Coverage | Lane Temp | Posted vs Spot % | Likely Shipper | Confidence | Notes | Screenshot</code></li>
             <li>Go to <strong>Extensions → Apps Script</strong></li>
             <li>Delete everything, paste the script below</li>
             <li>Click <strong>Deploy → New deployment → Web app</strong></li>
@@ -749,7 +864,17 @@ LOAD DETAILS:
 - Weight: ${form.weight || "Not specified"}
 - Rate: $${form.rate || "Not specified"}
 - Miles: ${form.miles || "Not specified"}
+- Spot Rate (7d avg): $${form.spotRate || "Not specified"}
+- Spot Range: $${form.spotLow || "?"} – $${form.spotHigh || "?"}
+- Contract Rate (90d avg): $${form.contractRate || "Not specified"}
+- Contract Range: $${form.contractLow || "?"} – $${form.contractHigh || "?"}
 - Notes: ${form.notes || "None"}
+${(() => { const ri = rateIntel(form); return ri ? `
+RATE INTELLIGENCE (auto-calculated):
+- Coverage Difficulty: ${ri.difficulty || "N/A"} — ${ri.diffNote || ""}
+- Lane Temperature: ${ri.marketTrend || "N/A"} — ${ri.trendNote || ""}
+- Posted vs Spot: ${ri.postedVsSpot !== undefined ? "$"+ri.postedVsSpot.toFixed(0)+" ("+ri.postedVsSpotPct+"%)" : "N/A"}
+- Spot vs Contract: ${ri.spotVsContract !== undefined ? "$"+ri.spotVsContract.toFixed(0)+" ("+ri.spotVsContractPct+"%)" : "N/A"}` : ""; })()}
 
 REQUIRED RESEARCH: Before answering, search the web for:
 1. "${(form.origin||"").split(",")[0].trim()} ${form.commodity || ""} facility plant mill"
@@ -781,6 +906,12 @@ Brief note on this freight lane — common? Seasonal? What typically drives this
 ### Red Flags / Watch-Outs
 Double-brokering risk, capacity crunches, detention at this facility, seasonal patterns, etc.
 
+### Lane Economics
+Based on the rate data provided, comment on:
+- Is this load priced competitively vs spot market? Will it cover easily?
+- What margin should a broker target on this lane?
+- Any rate trends or seasonal patterns to watch?
+
 Remember: the correct answer is usually the company with a FACILITY AT THE ORIGIN CITY, not the biggest brand name in the commodity space.`;
 
     try {
@@ -808,10 +939,14 @@ Remember: the correct answer is usually the company with a FACILITY AT THE ORIGI
       const text = data.content?.filter(c => c.type === "text").map(c => c.text || "").join("\n") || "No response received.";
       setResult(text);
       setLastForm(form); // Store for correction feature
+      const ri = rateIntel(form);
       const entry = {
         date:today(), timestamp:searchTimestamp, origin:form.origin, destination:form.destination, commodity:form.commodity,
         equipment:form.equipment, weight:form.weight, rate:form.rate, miles:form.miles,
         ppm:ppm(form.rate,form.miles), likelyShipper:extractShipper(text), confidence:extractConf(text),
+        spotRate:form.spotRate, spotLow:form.spotLow, spotHigh:form.spotHigh,
+        contractRate:form.contractRate, contractLow:form.contractLow, contractHigh:form.contractHigh,
+        difficulty:ri?.difficulty||"", marketTrend:ri?.marketTrend||"", postedVsSpot:ri?.postedVsSpotPct||"",
         notes:form.notes, fullResult:text, hasScreenshot:!!screenshot,
       };
       const newLog = [entry, ...log];
