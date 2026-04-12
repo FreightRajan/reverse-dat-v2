@@ -420,9 +420,14 @@ Parse aggressively but be SELECTIVE. Pull every LOAD detail you can see includin
 
       <Field label="Posting Broker" value={form.broker} onChange={set("broker")} placeholder="e.g. Shipping Connections Inc" full />
       <Field label="Load Notes (load details only)" value={form.notes} onChange={set("notes")} placeholder="Tarping, dimensions, stops, pickup dates, special requirements" full />
-      <button onClick={()=>onAnalyze(form, preview)} disabled={loading||(!form.origin&&!form.commodity)} style={{background:loading?"var(--surface2)":"var(--accent)",color:loading?"var(--muted)":"#fff",border:"none",borderRadius:6,padding:"14px 24px",fontSize:15,fontWeight:700,cursor:loading?"wait":"pointer",fontFamily:"var(--heading)",letterSpacing:0.5,transition:"all 0.2s",marginTop:4}}>
-        {loading ? "⏳ Analyzing load..." : "🔍 Reverse Engineer Shipper"}
-      </button>
+      <div style={{display:"flex",gap:10,marginTop:4}}>
+        <button onClick={()=>onAnalyze(form, preview)} disabled={loading||(!form.origin&&!form.commodity)} style={{background:loading?"var(--surface2)":"var(--accent)",color:loading?"var(--muted)":"#fff",border:"none",borderRadius:6,padding:"14px 24px",fontSize:15,fontWeight:700,cursor:loading?"wait":"pointer",fontFamily:"var(--heading)",letterSpacing:0.5,transition:"all 0.2s",flex:1}}>
+          {loading ? "⏳ Analyzing load..." : "🔍 Reverse Engineer Shipper"}
+        </button>
+        <button onClick={()=>{setForm({...EMPTY_FORM});setPreview(null);setParseError(null)}} style={{background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:6,padding:"14px 18px",fontSize:13,fontWeight:700,color:"var(--text2)",cursor:"pointer",fontFamily:"var(--mono)",transition:"all 0.2s"}}>
+          ✕ Clear
+        </button>
+      </div>
     </div>
   );
 }
