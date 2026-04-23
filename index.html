@@ -227,7 +227,7 @@ function LoadForm({ onAnalyze, loading, apiKey }) {
           },
           body: JSON.stringify({
             model: "claude-sonnet-4-20250514",
-            max_tokens: 800,
+            max_tokens: 1200,
             messages: [{
               role: "user",
               content: [
@@ -254,7 +254,28 @@ Extract ALL load details visible in the screenshot. Return ONLY a JSON object wi
   "notes": "LOAD DETAILS ONLY: dimensions, length, hazmat, tarping requirements, number of stops, pickup/delivery dates and times, special requirements. DO NOT include: broker credit score, days to pay, MC numbers, reference IDs, carrier scores, factoring info, or any broker-specific details"
 }
 
-Parse aggressively but be SELECTIVE. Pull every LOAD detail you can see including MARKET RATES sections. IGNORE broker details like credit score, days to pay, MC#, reference IDs — we only want to know the broker name, not their stats. For equipment, map common abbreviations: F/SD = Flatbed/Step Deck, V = Van, R = Reefer, FT = Flatbed. If you see multiple loads, parse the most prominent/selected one. Return ONLY the JSON, no other text.` }
+Parse aggressively but be SELECTIVE. Pull every LOAD detail you can see including MARKET RATES sections. IGNORE broker details like credit score, days to pay, MC#, reference IDs — we only want to know the broker name, not their stats. For equipment, map common abbreviations: F/SD = Flatbed/Step Deck, V = Van, R = Reefer, FT = Flatbed. If you see multiple loads, parse the most prominent/selected one.
+
+CRITICAL — MARKET RATES PARSING (READ CAREFULLY):
+DAT iQ displays rates in this exact structure:
+  SPOT RATE          [Market info]
+  $X,XXX  ($X.XX/mi)            [miles | 7d average]
+  Range:  $X,XXX - $X,XXX ($X.XX - $X.XX/mi)
+
+  CONTRACT RATE      [Market info]
+  $X,XXX  ($X.XX/mi)            [miles | 90d average]
+  Range:  $X,XXX - $X,XXX ($X.XX - $X.XX/mi)
+
+PARSING RULES:
+1. The "Range:" row BELONGS to the rate heading ABOVE it. The range under "SPOT RATE" = spotLow/spotHigh. The range under "CONTRACT RATE" = contractLow/contractHigh.
+2. Each range has TWO sets of numbers: large dollar amounts ($X,XXX - $X,XXX) and per-mile rates in parens. ONLY grab the large dollar amounts, NEVER the per-mile numbers.
+3. spotRate = the BIG dollar amount directly under "SPOT RATE" (not per-mile, not the range). Example: $4,890 not $3.82.
+4. spotLow = FIRST dollar amount in the Spot Range row. spotHigh = SECOND dollar amount.
+5. contractRate = the BIG dollar amount directly under "CONTRACT RATE". contractLow/contractHigh = dollar amounts in Contract Range row.
+6. Do not mix spot and contract values. If unsure about a number, leave it empty rather than guess.
+7. Remove commas from numbers. $4,621 becomes 4621. $5,146 becomes 5146.
+
+Return ONLY the JSON, no other text.` }
               ]
             }]
           }),
@@ -413,6 +434,22 @@ Parse aggressively but be SELECTIVE. Pull every LOAD detail you can see includin
                   Spot range: ${parseRate(ri.spotLow)?.toLocaleString()} – ${parseRate(ri.spotHigh)?.toLocaleString()} {ri.spotPPM && `(${ri.spotPPM}/mi avg)`}
                 </div>
               )}
+              {/* Sanity checks — warn if data looks off */}
+              {(() => {
+                const warnings = [];
+                const spot = parseRate(form.spotRate), sLow = parseRate(form.spotLow), sHigh = parseRate(form.spotHigh);
+                const con = parseRate(form.contractRate), cLow = parseRate(form.contractLow), cHigh = parseRate(form.contractHigh);
+                if (spot && sLow && sHigh && (spot < sLow || spot > sHigh)) warnings.push(`Spot rate ($${spot}) is outside spot range ($${sLow}-$${sHigh}) — check parsing`);
+                if (con && cLow && cHigh && (con < cLow || con > cHigh)) warnings.push(`Contract rate ($${con}) is outside contract range ($${cLow}-$${cHigh}) — check parsing`);
+                if (sLow && sHigh && sLow > sHigh) warnings.push("Spot low > spot high — values swapped?");
+                if (cLow && cHigh && cLow > cHigh) warnings.push("Contract low > contract high — values swapped?");
+                if (!warnings.length) return null;
+                return (
+                  <div style={{marginTop:8,padding:"8px 12px",background:"#2d1f08",border:"1px solid #8b5a1a",borderRadius:6,fontSize:11,color:"#f0b056",fontFamily:"var(--mono)"}}>
+                    ⚠ {warnings.join(" · ")}
+                  </div>
+                );
+              })()}
             </div>
           );
         })()}
@@ -501,29 +538,54 @@ function ResultCard({ result, lastForm, onCorrect }) {
         let match;
         while ((match = regex.exec(result)) !== null) {
           const name = match[1].trim();
-          // Filter out section headers and non-shipper bold text
           if (name.length > 3 && !name.match(/^(Confidence|Industry|Prospecting|Red Flag|Watch|HIGH|MEDIUM|LOW|Facility|Ownership|WHY|Phone|Website|Our |Smart|Single|24\/7)/i)) {
             if (!shippers.includes(name)) shippers.push(name);
           }
         }
         if (!shippers.length) return null;
         const origin = lastForm?.origin || "";
+        const commodity = lastForm?.commodity || "";
+        const equipment = lastForm?.equipment || "";
+        const confirmShipper = (name) => {
+          if (!onCorrect) return;
+          onCorrect({
+            date: today(), location: origin, commodity, equipment,
+            shipper: name, notes: "Confirmed correct by user from AI analysis",
+          });
+        };
+        const confirmAll = () => {
+          if (!onCorrect) return;
+          if (!confirm(`Save all ${shippers.length} shippers to your Intel knowledge base?`)) return;
+          shippers.forEach(s => confirmShipper(s));
+        };
         return (
           <div style={{marginTop:20,padding:"16px 20px",background:"var(--bg)",border:"1px solid #238636",borderRadius:8}}>
-            <div style={{fontSize:13,fontWeight:700,color:"#3fb950",fontFamily:"var(--heading)",marginBottom:10,textTransform:"uppercase",letterSpacing:0.5}}>🎯 Prospect These Shippers</div>
-            <div style={{fontSize:11,color:"var(--text2)",marginBottom:12}}>Opens Google Maps → your Lead Dashboard picks it up automatically</div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+              <div style={{fontSize:13,fontWeight:700,color:"#3fb950",fontFamily:"var(--heading)",textTransform:"uppercase",letterSpacing:0.5}}>🎯 Prospect These Shippers</div>
+              {onCorrect && (
+                <button onClick={confirmAll} style={{background:"var(--surface2)",border:"1px solid #238636",borderRadius:5,padding:"5px 12px",fontSize:11,color:"#3fb950",cursor:"pointer",fontFamily:"var(--mono)",fontWeight:700}}>
+                  ✓ CONFIRM ALL TO INTEL
+                </button>
+              )}
+            </div>
+            <div style={{fontSize:11,color:"var(--text2)",marginBottom:12}}>📍 Prospect = Google Maps · ✓ Confirm = save as verified shipper to Intel</div>
             <div style={{display:"flex",flexDirection:"column",gap:6}}>
-              {shippers.slice(0,3).map((s,i) => (
-                <a key={i} href={`https://www.google.com/maps/search/${encodeURIComponent(s + " " + origin)}`} target="_blank" rel="noopener noreferrer" style={{
-                  display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:6,textDecoration:"none",cursor:"pointer",transition:"all 0.15s"
-                }}>
-                  <span style={{fontSize:18}}>📍</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:13,fontWeight:700,color:"var(--text)",fontFamily:"var(--heading)"}}>{s}</div>
-                    <div style={{fontSize:11,color:"var(--muted)",fontFamily:"var(--mono)"}}>Search on Google Maps</div>
+              {shippers.map((s,i) => (
+                <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:6}}>
+                  <span style={{fontSize:18}}>🏭</span>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:13,fontWeight:700,color:"var(--text)",fontFamily:"var(--heading)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s}</div>
+                    <div style={{fontSize:10,color:"var(--muted)",fontFamily:"var(--mono)"}}>#{i+1} suspected shipper</div>
                   </div>
-                  <span style={{fontSize:12,color:"#3fb950",fontFamily:"var(--mono)",fontWeight:700}}>→ PROSPECT</span>
-                </a>
+                  <a href={`https://www.google.com/maps/search/${encodeURIComponent(s + " " + origin)}`} target="_blank" rel="noopener noreferrer" title="Search Google Maps" style={{background:"var(--bg)",border:"1px solid var(--border)",borderRadius:5,padding:"6px 10px",textDecoration:"none",fontSize:11,color:"#3fb950",fontFamily:"var(--mono)",fontWeight:700,cursor:"pointer"}}>
+                    📍 PROSPECT
+                  </a>
+                  {onCorrect && (
+                    <button onClick={()=>{confirmShipper(s); alert(`✓ ${s} saved to Intel`);}} title="Save as verified shipper" style={{background:"#0d2818",border:"1px solid #238636",borderRadius:5,padding:"6px 10px",fontSize:11,color:"#3fb950",fontFamily:"var(--mono)",fontWeight:700,cursor:"pointer"}}>
+                      ✓ CONFIRM
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
           </div>
