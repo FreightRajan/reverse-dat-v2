@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:67c22d67a2426443e9c09c1f96553e14a4bb2004a1325882f1d249258e34e6f0",
+  "claims": [
+    {
+      "id": "claim_bef4d00b38824efcbe4ea377024d8d38",
+      "statement": "The static single-file application identifies as v3.3 and exposes Analyze, Log, Intel and Settings tabs.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L1-L54",
+          "version": "repo-lines-v1:sha256:e021d4fc59b1c9e238c02cc5a226d0011b5d5beb1dca5b771b52ac610bcc0da3:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkMGI2ZjVlMzA5ZGY4ZmNlODgxNWY5MDhkZDY4MjFiMDQ5NmNmNDNjZDlmYjRmZjdlYTljMGNlNzQ3NzA4MjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1Y2YyY2ExYmU3Yzg2NzYwOTFkY2YwMWE1M2JlNDU0MTcwMzViZDkyZGYyZWNkNGJkZGMxMWU2YjM4MmE3ZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2MWU3NzYxNzFmNjA5NTU2MTZkODE5MjAxMzU3NzE0M2NjYmJlNzJmNzJlMzE4ZDdiNmUwMmVlODgyZjY2ZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef0ea9e74c424a639b3063947ebdadb4",
+      "statement": "LoadForm supports screenshot upload/drop/paste and sends images to Anthropic for structured load extraction.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L206-L335",
+          "version": "repo-lines-v1:sha256:5be3f9f0d9a1116e388069cc6b9aec261e377ff5ddf92222047507bd1e12fd3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwYWI2MDUyNWI5NzYwOGJkMjdiMjdhM2I4ZmMxOWJhMmQ0YjU2MTZlNzUyZThjMWQ3M2M1MmI4YTllNGFkOWYyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2YWNmZjg1MGM5NDU5ZjgyNWE5MTUzZjExMjhkNTQxMTk5OGI5OTZhYjEwNTdmNDNiY2M4MTg1YjUxZjFkZGRmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzYzJiY2YyNzgxYTVhMWJlYWUxNjY5NmU5ODNkNDE5MjZkYjYwY2M5ZGMxNzYzNmUwMDdkZTQ3ZTdlZTkxYzIwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjgzNjRjYzE3NjVhZmNlOTZmMjJhYjIwMDVlZmI0MzM5MzllOGZlYzEzNjlkODgyYTY1YmQzYjA3NmRiZDMxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_2050ea32e2dc4a2ea9dc26582de21677",
+      "statement": "The password gate checks a client-side constant and saves rdat_auth in localStorage, without a server authentication step.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L1083-L1102",
+          "version": "repo-lines-v1:sha256:7a5f80910914a807973d74829a33669f09530c37d740af73a971684ec505da58:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3MjE2ZThlOWMwYTFhNjhkMDZjMmZiYWE1ZmQyMTM5NDgyYjhlZmQwYTE5MzE1YjkxNWU2Y2NlODQ5ZDg5ZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyYTY2N2Y5MTBiYzVlZGYzMjljZjk3ZTY5NTMzNGY5OTU5NmQyMTdkODk3YjdiNGI4ODcwMTExNmRmNTA5NDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiYmRjOGZkMzIzYTAzNThhZWExM2M2MDQ5ZDJlY2Q0NzNkYjlhYjNkYTIwZWY2YzhkZDdhNTc2ODE5NDZiOTgifQ"
+        },
+        {
+          "resource": "repo://index.html#L889-L917",
+          "version": "repo-lines-v1:sha256:383f5c84ebbad4e792067b638241864b785f24e0406fa64bba948b622447e290:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwODU4ZTI3NjcyNDZiZGFjNDc1NmY3ZDFiMWMxYWNiZmRlOTMwOTdlMzMwODQ0YjYxODE1Y2FiNjRhYzQyM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUyYWE4MjZmMDBlN2IzYzdhOTRjZWZhZThhNzc2ZTY0NDI4MjUzNTA0OTBhODFkMWIyNzQ1MzM1YWZiNjBkYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyNWU4NmU5NjUyMGQ0NTkxNmU2YmFmMWE0ZWY1YWQyMTMxYWY2N2IzYjkyOGEyYmVlMDEzNjkyOTMxOGVlOWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56b1174d132b44e4ae2da5538642625c",
+      "statement": "Saving and testing a Sheets URL calls a test function that posts a real test row.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L849-L862",
+          "version": "repo-lines-v1:sha256:744325394c4befeec1a9612211c4ed79c4864827e602886ab68b831a284ecdfa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyOGViMDEwNWM4YzlmYjBiNmYzZTI4OGRmMDk3YTQwMzQzYmU3M2Q4ZWI2ZTQ1YzY4MTg4YWU0N2ZiMWY3YzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZjNjZmQxMWRhNjE1MDE5N2FjZWVkMDg0MDZhYzY0YjA1MDM0MGRlN2JjMDQxMjRhNGNiN2VmYTY3MTM0MGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxYjVkZDViNTlmOTliODAxYjExYTMyMDJhMDY1YWE0ZjZiMjg1Nzc2MTA3MzkyMjBhZDJlMDM1N2M4ODJiYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwMGRkODk3MmI5NzNlYzgyOGQ2MDE3Yjc0MTUyZDgxNTAwNTg5MjQ3ZmFkMTE2MDUwMDAwMGY0MDM3NmQ3N2IifQ"
+        },
+        {
+          "resource": "repo://index.html#L925-L935",
+          "version": "repo-lines-v1:sha256:87a2b6b67c22110a5b0e6db34d4488e8a7fdac38f60a4ddc0ea5ab590c2f3c17:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMzM5ZDM5MDRlNjViN2Q0NTg2OGU1YTkxZDg5YjNmNTkwM2M2MjNmMGFlN2ZjZGVmYjY3NDliNGMxZDczODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NTZhY2M0Njc2OTYxNTc3MzhjMTJkNDgyY2U1NzZkMTI3NmM1ZDRiMzhjZTFlNTA2ZmEzM2E5OTc4MzkzNjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmZGU3NGVhNzNmNGMzODY3ZDMxODE0NDcwMmZjYTM1YTJmZmQyZTA2NDVhODM0NDFmNTQxZjJhYjg2NzIxY2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwYzQxNzBhYjA4ZmIwM2Q1YzEwYWQyYzk5MzdkNmYxNmZiNDZiY2EwMzNiYTE0NmE0MjNjNDg1MzBlYjhkZmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2aef3f5cc30042dbb71c9d0c6d69c54b",
+      "statement": "Screenshot export can cause the embedded Google Apps Script to create Drive files.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L723-L786",
+          "version": "repo-lines-v1:sha256:941a7ec402f6bf0631ba2a34f06887cfccc5edce5afb3f837f4575568d39a506:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlZGJjNGY5ZTQ1MmQzYzhhZjFlOGE2ODQyODZjNzFhNmU5N2I3NjA5NGRkZTllOTRkMTQ5MzIxZGVkM2JlYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxZjQxYjRiYTY5NjQ3MDNjNDRkODQ2ZjAxZmE2ZGQ3MzFiNWI5N2RiM2U3NmM4ZmFjZmIyNmE1ZGQ2MzA5NzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmZTIxNTc0ZDhkYWIwYWM4MDIwMzdmM2RiNTk0MjhlNGQxMzg4ZTNkNjU2NDIyZTJmNDY0NjY2MmI5NTk3OWUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-05T03:53:51.400Z"
+  }
+}

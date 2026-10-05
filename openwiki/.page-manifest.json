@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/data-integrations.md": {
+      "pageVersion": "sha256:cda89e7d9820869a69e00ad90217f83b442bf9868badde6202ee4cd73cc8829c",
+      "completedBy": "codex",
+      "completedRunId": "9da89e7b-613b-4c4c-812c-db4f0a90cd52",
+      "gitHead": "30227d4662862f2e551c621e2798f4e0dd054212",
+      "sourceFingerprint": "sha256:5e0f393799684d5f748afca9408ae4a1a785ae20d73058e4f77a1d4611897aa9"
+    },
+    "/openwiki/architecture/research.md": {
+      "pageVersion": "sha256:4d19d2cb4bdcc4cadb4306165509397012470ce8f9948a94c1a6fd1a413b95cc",
+      "completedBy": "codex",
+      "completedRunId": "9da89e7b-613b-4c4c-812c-db4f0a90cd52",
+      "gitHead": "30227d4662862f2e551c621e2798f4e0dd054212",
+      "sourceFingerprint": "sha256:5e0f393799684d5f748afca9408ae4a1a785ae20d73058e4f77a1d4611897aa9"
+    },
+    "/openwiki/quickstart.md": {
+      "pageVersion": "sha256:67c22d67a2426443e9c09c1f96553e14a4bb2004a1325882f1d249258e34e6f0",
+      "completedBy": "codex",
+      "completedRunId": "9da89e7b-613b-4c4c-812c-db4f0a90cd52",
+      "gitHead": "30227d4662862f2e551c621e2798f4e0dd054212",
+      "sourceFingerprint": "sha256:5e0f393799684d5f748afca9408ae4a1a785ae20d73058e4f77a1d4611897aa9"
+    }
+  }
+}
