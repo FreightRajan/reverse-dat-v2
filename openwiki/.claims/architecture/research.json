@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4d19d2cb4bdcc4cadb4306165509397012470ce8f9948a94c1a6fd1a413b95cc",
+  "claims": [
+    {
+      "id": "claim_47f0a2a849f9403682cef9ab2f00c478",
+      "statement": "Screenshot extraction submits an image to Anthropic, parses JSON text, preserves existing form values for missing fields, and validates equipment against EQUIP_TYPES.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L206-L335",
+          "version": "repo-lines-v1:sha256:5be3f9f0d9a1116e388069cc6b9aec261e377ff5ddf92222047507bd1e12fd3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwYWI2MDUyNWI5NzYwOGJkMjdiMjdhM2I4ZmMxOWJhMmQ0YjU2MTZlNzUyZThjMWQ3M2M1MmI4YTllNGFkOWYyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2YWNmZjg1MGM5NDU5ZjgyNWE5MTUzZjExMjhkNTQxMTk5OGI5OTZhYjEwNTdmNDNiY2M4MTg1YjUxZjFkZGRmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzYzJiY2YyNzgxYTVhMWJlYWUxNjY5NmU5ODNkNDE5MjZkYjYwY2M5ZGMxNzYzNmUwMDdkZTQ3ZTdlZTkxYzIwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxNjgzNjRjYzE3NjVhZmNlOTZmMjJhYjIwMDVlZmI0MzM5MzllOGZlYzEzNjlkODgyYTY1YmQzYjA3NmRiZDMxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_981d9eb55b6d48aaaac63f64ab0d4291",
+      "statement": "Shipper research uses an Anthropic Messages request with web_search_20250305 and a 2000-token limit, then keeps text response blocks.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L937-L1042",
+          "version": "repo-lines-v1:sha256:ae4cf65c083495c96e2b8dfbdf67cdb9b164774e5e0af4d5a9d7a18e3f483c9a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4ZmZmODhlM2UxMzRlNDAyMjAyZjMyNjNmNGE2MDEzN2M3NTgwNjQ0ODgyZDFlNzRkYTVlMDEzMTI1Zjc1NjNmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlMDE4NDYyZmQxYTJkNTEzODFiOTkwYWNkYTE3ZWE1YjRiNTY1MzU4ZWYwZGZhNmEyYzBlYzFlMTM5ZThmNWIwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzMzA3ZWUzNGM2OGY0YTk0YTZiNzRiYTc4NDE1NTViZmE4MzVkYzVhMDMyY2JlZDQzM2U5OTg2YmE0NmMzMmI5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwN2U0ZWE4YzlkMGNkZWM5NWJiYjI0MTUxMmQyMmFlZjFkMDMxNTc4MmFiZGRmNTQ2MmY5NmNjOGE1NzgxOTFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_d157c1d5470548909c4026e5566bdcc7",
+      "statement": "Prospect buttons are derived from SHIPPER_LIST while the logged likelyShipper is derived by extractShipper from the first bold phrase.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L1042-L1052",
+          "version": "repo-lines-v1:sha256:74a43c314e1609374c8d919b955a635695c0d33080a785f5bba6ccb472259a7b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwMTg0NjJmZDFhMmQ1MTM4MWI5OTBhY2RhMTdlYTViNGI1NjUzNThlZjBkZmE2YTJjMGVjMWUxMzllOGY1YjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0MTAwN2YyNTlhOTIxYzQ5N2QwNjk5NjYzODY1MDg1MWE4YWQ4OTgyODMyMGZiZjJjNTE2YWIyOWE0NTI3MTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNzExMzZlZmQ0NzFhYjRhOGJmMTk1ZWRkNzljMWIxZjA5NGJhYzkwODQ2NDIzZjlmNGVhMGJlMDI0ODIxYzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM3MDM5Y2YyNjRjYzNlNjZjOGU5NTg3N2U1ZDFlYjY1YzMxNWVhOTYyNTVhZDhhY2ExMzgxYzNiY2Y1Njg0ZDMifQ"
+        },
+        {
+          "resource": "repo://index.html#L541-L604",
+          "version": "repo-lines-v1:sha256:03b6fdb6106edbcfb069d729ac688c26c7c2300f6044257a500bc1d6a5dc49a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1YTY0MGVkMjk2ZmE1NDg3NDY1NzAwZmZkYjA5NjNjZWM1NzZlZDVlZDk3Mjk2ODZiOTVkNDgzMjUwYTc0NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE0YzFjMmYxZDllNTU5MTlhYWY5YWM2NmQzZWZjZTk0MDk0M2Y3OTNkZDQwYjEzZWFkYTE2NmVlZGQwOThhYzMifQ"
+        },
+        {
+          "resource": "repo://index.html#L64-L65",
+          "version": "repo-lines-v1:sha256:6b9be509b104f8976d62aad090f83b57836d073af5666c2f79d9acc13d76dace:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ2MjA0NmNiNDMwY2I2ZDNjZmFlMzNhMmVhMjZiYzk3MTJhMmU4MTc1MDI3OTkyMmQ4NjU4NzNmZTJjOWIwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGYzNDQ3MjVmYjcwZjQ0MDRjMGJkZDYzZGRkOWMzNmQ2YTU5ZGZjYWY3YjAxOWIxNmU0ODYyOWIxZTRhMzRjZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGE3YmVlODI3MGI0NDNhNmFkYjVlYzZlZTUzOWIyODc1M2FlYTg5ZWIxNGE5ZDhhYWNlNDE0ZWUwOWM4ODQ3OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTdlN2VkMTQxNDkyM2JjZDMwNTBkZTUzZDFkOGRlMjE5YTZmMzJlOGRkOTRlMzUzZTg5ODc0NzZhNTc4MjA0OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a01e219e4e754f3ba0c5365ac6b70233",
+      "statement": "Intel entries are browser-local corrections and confirmations supplied as prompt context; buildKBContext includes all entries despite computing an unused relevant subset.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L115-L143",
+          "version": "repo-lines-v1:sha256:f3e59513655f1cbe16e689bc5eab52fb12ff057430fa634688a1e112034b4c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZWFmNmI1MjVhOWU1OGRkYTkzMWQyMTQ4YWM1YzYyMzkwNGI5ZTAyZThiMWIyYTQ2OTAxY2RlYTcyYjkwNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc3YzVmY2Q3MDc3ZmU0NzIzOTNmYjk4MWRiNzYwZTQyM2U4M2NkZGY2ZjNhMzhlZjM2ODI2ODNmMjU0YzAwNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhYjQ2ZmMyN2U4NDE1ZmUzZTIwYjk4YTM4NWUwZjY4MmNiMGZlOGM2YjAyMDI4MTY0Yjc4MDhiOWU3ZTkzN2EifQ"
+        },
+        {
+          "resource": "repo://index.html#L491-L505",
+          "version": "repo-lines-v1:sha256:71080a35bbaf21248355bab90316ace4a614f72b2ddd296c9cd9e58e32b8ff73:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MWFmZDMyMjNhNGQwOGI5ODczMmYwMzA2NmI3NjE0MzUxYmQxNzM1N2ViOGYxM2JlN2I2ZjkwOTBkMWNhMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmOGE3MTcwYzJhNmFjMWY0NmY3OTkyYzI4MDY5OTFjYTJmOWE4MGNkZGFlZDNmMmQwN2IwZmRmYTAxYTcxNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzZTFhNTQ1ZjkzNDEwY2UwNGM3NWUzZjA5YTYzMDQzMmQ4NzAzZjk5YTc3MmI2ZGIwMmYxMjMxNTYyYWQ1ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxZTU0NjBiOGY3ZjViMDFkZTA1NGNiMjAxMDdlMDdmYTU1MWYyMWY2OGI2ODA2YTlkMzRhOWY3MzlmNzI4MTYifQ"
+        },
+        {
+          "resource": "repo://index.html#L557-L570",
+          "version": "repo-lines-v1:sha256:a15ac3927525e4dbefe0ac35e4914a7d0ba4bd3a7995fe7fd3d452d1de29f95b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyYjI2N2JkMjA0ZGRkY2EyNGI1ZTczOTY5ZDRlYTBiM2MyZjRkMjQ3Zjg0NGUzYmU4OGQ5ZmRkMzQ0MTZjZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlZTQ1OGJiMDM4ODcxY2E1Y2UyOTM2Zjk5NDMxZmVhMjhlNDg5MThkZTQyOGQzNjZlNzg5YjBlNGZkOWZmZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlY2IwYzcwMjc2NGViNjMwYTU3NzlkNWUyMjk3YTI5MmI1YjI1MTc4ZDVjODFkMjE0YzYyYzU5ODdmMzEzMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExNWM2ZGY1NGFiMzhmZDMzZDk4OGFkMzFhM2ZiNDExOGViZjUyYzBlZDYxYzA4NWVhNjYyODdjMjNkNTVhNGYifQ"
+        },
+        {
+          "resource": "repo://index.html#L605-L617",
+          "version": "repo-lines-v1:sha256:d2e85a1ff50466fa7b6ffb799cccbe07c7ae4ac28d5b6a564225f10f2877e3f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiOTU1YTkzOGU1NjMxMDI2MjllZDc5ZGZmMjAwZTVlZjc3YjEzM2E5ZmFiNjk1MDQ5MTg2YTg1NzFjNTI5ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5NGZjMGMxNzNkMWVjM2ZjNTAxZDdkZmE5Mjg1NTAxYzUyN2NmYjQ3MTI1ODNkYTNjYzM2MTgwNTY2YjRiZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwNTZlODRiYjI1YzdkNjUxMjk0OWRkNmNlODA2ZmM2YTJiMTVjNWJmMTU1YTc3NjY5NWFmZDZlOWY1ZWI5MzcifQ"
+        },
+        {
+          "resource": "repo://index.html#L911-L923",
+          "version": "repo-lines-v1:sha256:c27592e3b523ff4e217e86d429c449d69f6fb4b77ea65020d1a2db0b4701f310:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5NjZmYmZhODg5OThkYTc0NjU2YzUwMTk0OTU2YzI1ZjA4NDk0NTc2NjBjMDA5ZmU2M2QxZTlmYTlkYzkzMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0NzA2Nzk2YThhN2MxYjZhZTkyMDM4ZjdkNmIzOGM3ZmU5M2Q2ZTQ0MjJmMWQ0N2FmYmRmMWYyMDYxNTI2MzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmM2U3NTc3MWI5MzUxZDljOTc5YTQ5MDFlOWYyMTUwMTdjOGM0ZTdiYmU0Mzc0NjU1YzcxNGU5Y2E3YmQ5OWIifQ"
+        },
+        {
+          "resource": "repo://index.html#L942-L959",
+          "version": "repo-lines-v1:sha256:47424fd24f28535203cda0c2964de9d593a5b2d137d5f3326fe281edd7321e8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5YWM0YjQ0YWUzN2FmMDk5ZGI1MzMyNzczZjc5NDg5ODc3MjI4ZGQ1ZmFmOWYzNDk1YjA3YmEyNjI2MWJiYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyMmYyZjdmY2ZiMTJlYThiYTdhMGJkOTNjYWRiN2IyNDZhODgzNmNjMmI4MjdjMmViZmVkNWQ2YTA2OGRlODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkMjNmNWZkZmI4ZWUxYTBjMTVmMjdhNjgyYzk4YzRhMTA3MTAxYjJhODJlNmUyNzY1YjI1YzgxYTNiNDYxMzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f473d6cfb084cb191336895f85b097f",
+      "statement": "Confirm All invokes onCorrect repeatedly, while addCorrection prepends using the current kb closure rather than a functional state update.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L557-L571",
+          "version": "repo-lines-v1:sha256:6683319a9651c143dc9736fbcbbf656ce774673eb3fb3b42f0f4553b67970e5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyYjI2N2JkMjA0ZGRkY2EyNGI1ZTczOTY5ZDRlYTBiM2MyZjRkMjQ3Zjg0NGUzYmU4OGQ5ZmRkMzQ0MTZjZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3Nzg4YjU4YWNlZWE0NTk1MzRlNmNmMzExM2QwYjYyNDFhZGQ4MWQwMGFhMGMyZWZhMmEzNzg3MzI3ODU3ZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlY2IwYzcwMjc2NGViNjMwYTU3NzlkNWUyMjk3YTI5MmI1YjI1MTc4ZDVjODFkMjE0YzYyYzU5ODdmMzEzMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhZGMxZTRiOTUyODMzNTFjODU4NmZhZGZlYzU2NjU0MzBhNjU3N2QzZmUwNmVmYTJlNTBkMzhlMTc1ZWUyYTYifQ"
+        },
+        {
+          "resource": "repo://index.html#L919-L922",
+          "version": "repo-lines-v1:sha256:6684e63a0fcf41fffab23a6c1f1847cfe4481b90a39f5ae855f5bc36ae933615:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmQ0ODBjODg2MzE3NTgzYzAzMTNlMWJhODIxYjZkNGI0NDU1NmZiNDAxMzBlNDg0NWJkZTNiNDY3YjZhNTdjNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWUyYzE5NjI1Mzg1ZDI1ZTcxZTdlNzJjMzJlOTlmMGQ5NzcxYTRlMDI0NDZmNjJlOTBkNzcwNjg0ZGJhN2JmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmRhZGZkNTljOWY5ZDI0ZmQwODVmMjA1YzEyMTk2MWEzMDgwYTgxYTRlNTkwYTQxZTlkYTI4ZjRiMWJlZmI3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2YxNDA2YjdjNWFlNWI3NjkzYWY4NDAxZTM0N2FiM2MyMjY3YzQwZmI1NmRjNWE3ZjkxM2YzMjM4ZTU2Mzc0MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a7edeecb616472e9f53c6d4705c6f1f",
+      "statement": "Coverage and lane-temperature labels use deterministic posted/spot/contract ratios and truthiness guards rather than fetching live market rates.",
+      "evidence": [
+        {
+          "resource": "repo://index.html#L68-L105",
+          "version": "repo-lines-v1:sha256:3fbaa2e7189cb2ca55b57ce4a6686273118af48d37da1118e82c3f6989ac97d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNDQ3YWY3MDQxODIxZTc2ODg0M2YwMTVlODViMWE0NDE3MThkMGY1ODEzYTkxNGQxNmYwYmY2ODg4NDI1ZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1MWExN2FlZWUwNDZkZWU0ZTEyYTY5Mzg5YjhmYTZjNmViOTE4YjRiY2UxNDFmZWRlYTQ2NTRmODQ4NzQyOTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZmYxYmFkZDVmMmJlNThjOThiNmE2MGQ0ZmM1ZGNiODA0ZjZlYmQ5MTQyYmY4NDNmZGRmN2U2N2QwZTIxZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyNDE0NmYyM2MzZjBlZjAwNDMyMjBhYzgyMjRlZWRjNzY3ZmE5YjBjYWJkOTcwMzMyYzZlYjZmODQ3NjVhNGIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.0",
+    "at": "2026-10-05T03:53:51.400Z"
+  }
+}
